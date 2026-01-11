@@ -4,6 +4,17 @@ document.addEventListener('DOMContentLoaded', () => {
        MODAL DE SERVICIOS
     ====================== */
 
+    const homeSlider = document.getElementById('homeSlider');
+
+    loadGallery(
+        [
+            'img/est-pp-sala-comedor.jpeg',
+            'img/est-pp-sala.jpg',
+            'img/est-pp-comedor.jpg'
+        ],
+        homeSlider
+    );
+
     const modal = document.getElementById('serviceModal');
     const modalTitle = document.getElementById('modalTitle');
     const modalDesc = document.getElementById('modalDesc');
@@ -11,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalTabs = document.getElementById('modalTabs');
     const modalGallery = document.querySelector('.gallery-track');
     const floorDesc = document.getElementById('floorDesc');
+    const spaceSummary = document.getElementById('spaceSummary');
 
 
     let sliderInterval = null;
@@ -21,16 +33,53 @@ document.addEventListener('DOMContentLoaded', () => {
             desc: 'Un refugio campestre donde la calma y el descanso se viven naturalmente, espacios rodeados de tranquilidad, pensados para el descanso y el confort.',
             floors: {
                 'Primer Piso': {
-                    desc: 'Cuenta con:',
+                    desc: 'Lugar social para compartir:',
+                    spaces: [
+                        'Sala–Comedor',
+                        'Baño',
+                        'Cocina amplia (equipada)',
+                        'Habitación (4 camarotes)',
+                        'Lavadero grande',
+                        'Alcoba trasera'
+                    ],
                     images: [
-                        'img/tm-img-01.jpg',
-                        'img/tm-img-02.jpg',
-                        'img/tm-img-03.jpg',
-                        'img/tm-img-04.jpg'
+                        'img/est-pp-sala-comedor.jpeg',
+                        'img/est-pp-sala.jpg',
+                        'img/est-pp-comedor.jpg',
+                        'img/est-pp-baño.png'
                     ]
                 },
                 'Segundo Piso': {
-                    desc: 'Vista panorámica, balcón privado y mayor privacidad.',
+                    desc: 'Vista panorámica, balcón y mayor privacidad.',
+                    spaces: [
+                        'Sala',
+                        'Baño',
+                        'Balcón frontal',
+                        'Balcón trasero',
+                        'Habitacion principal',
+                        '2 Habitaciones auxiliares'
+                    ],
+                    images: [
+                        'img/estadia-sp-sala.jpg',
+                        'img/estadia-sp-cp.jpg',
+                        'img/estadia-sp-ca1.jpg',
+                        'img/estadia-sp-ca2.jpg',
+                        'img/estadia-sp-baño.jpg'
+                    ]
+                },
+                'Estadero': {
+                    desc: 'Espacio ambiental y recreacion',
+                    spaces: [
+                        'Piscina',
+                        'Baños',
+                        'Zona de descanso',
+                        'Mini Bar',
+                        'Cocina (No equipada)',
+                        'Nevera',
+                        'Asador',
+                        'Fogon de leña',
+                        'Mini Lavadero'
+                    ],
                     images: [
                         'img/tm-img-05.jpg',
                         'img/tm-img-06.jpg',
@@ -41,17 +90,18 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         pasadias: {
             title: 'Pasadías',
-            desc: 'Disfruta un día completo de relax.',
-            floors: {
-                'Primer Piso': [
-                    'img/tm-img-01.jpg',
-                    'img/tm-img-02.jpg'
-                ],
-                'Segundo Piso': [
-                    'img/tm-img-03.jpg',
-                    'img/tm-img-04.jpg'
-                ]
-            }
+            desc: 'Comparte en un espacio calido y de recreacion lleno de experiencias.',
+            spaces: [
+                        'Habitación principal',
+                        'Baño privado',
+                        'Balcón',
+                        'Zona de descanso'
+            ],
+            images: [
+                'img/eventos1.jpg',
+                'img/eventos2.jpg',
+                'img/eventos3.jpg'
+            ]
         },
         eventos: {
             title: 'Eventos',
@@ -91,6 +141,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 tab.classList.add('active');
 
+                renderSpaces(service.floors[floor].spaces);
+
                 floorDesc.classList.remove('active');
                 floorDesc.textContent = service.floors[floor].desc;
 
@@ -106,6 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (index === 0) {
                     floorDesc.textContent = service.floors[floor].desc;
                     floorDesc.classList.add('active');
+                    renderSpaces(service.floors[floor].spaces);
                     loadGallery(service.floors[floor].images);
                 }
             });
@@ -120,17 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.classList.add('active');
     }
 
-    function makeInfiniteSlider(track) {
-        const items = Array.from(track.children);
-
-        // Clonamos cada imagen
-        items.forEach(item => {
-            const clone = item.cloneNode(true);
-            track.appendChild(clone);
-        });
-    }
-
-    function loadGallery(images) {
+    function loadGallery(images, container) {
         const track = document.querySelector('.gallery-track');
         if (!track) return;
 
@@ -150,7 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         requestAnimationFrame(() => {
-            startInfiniteSlider(track, images.length);
+            startInfiniteSlider(track, images.length, 0.6);
         });
     }
 
@@ -167,16 +210,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     closeModal.addEventListener('click', closeServiceModal);
-
     modal.addEventListener('click', e => {
         if (e.target === modal) closeServiceModal();
     });
 
-    let animationId;
-    let translateX = 0;
-    let speed = 1.5; // 👈 controla la lentitud (0.2 = más lento)
 
-    function startInfiniteSlider(track, originalCount) {
+    function startInfiniteSlider(track, originalCount, customSpeed = 1.5) {
+        let animationId;
+        let translateX = 0;
+        
         cancelAnimationFrame(animationId);
         translateX = 0;
 
@@ -186,17 +228,26 @@ document.addEventListener('DOMContentLoaded', () => {
             .reduce((total, el) => total + el.offsetWidth + 16, 0);
 
         function animate() {
-            translateX -= speed;
-
+            translateX -= customSpeed;
             if (Math.abs(translateX) >= firstBlockWidth) {
-                translateX = 0; // 🔁 reinicio INVISIBLE
+                translateX = 0;
             }
-
             track.style.transform = `translateX(${translateX}px)`;
             animationId = requestAnimationFrame(animate);
         }
-
         animate();
+    }
+
+    function renderSpaces(spaces = []) {
+        if (!spaceSummary) return;
+
+        spaceSummary.innerHTML = '';
+
+        spaces.forEach(text => {
+            const span = document.createElement('span');
+            span.textContent = text;
+            spaceSummary.appendChild(span);
+        });
     }
 
 });
