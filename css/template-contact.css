@@ -99,6 +99,7 @@
 }
 
 .contact-section {
+    background: #036608;
     background-color: #67a4af41; /* Cambia esto */
     background-size: cover;
     background-position: center;
@@ -115,10 +116,17 @@
     flex-wrap: wrap;
 }
 
+.contact-section .card {
+    background: linear-gradient(0deg, #668866, #95d2d6a1);
+    border-radius: 20px;
+    box-shadow: none;
+    border: 30px;
+    
+}
+
 .card {
-    background: rgb(196, 231, 114);
     color: black;
-    border-radius: 15px;
+    border-radius: 25px;
     padding: 25px;
     width: 23%;
     min-width: 230px;

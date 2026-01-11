@@ -36,8 +36,8 @@ p:last-child { margin-bottom: 0; }
     font-weight: 600;
 }
 
-.tm-bg-primary { background: #415739; border-radius: 10px; }
-.tm-bg-highlight { background: #3c5a53; border-radius: 10px;}
+.tm-bg-primary { background: linear-gradient(-150deg, #3e7e83f8, #293f15); border-radius: 10px; }
+.tm-bg-highlight { background: linear-gradient(-50deg, #293f15, #3e7e83f8); border-radius: 10px;}
 
 .btn-primary {
     background: #155991;
