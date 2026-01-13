@@ -199,66 +199,79 @@ document.addEventListener('DOMContentLoaded', () => {
         modalTitle.textContent = service.title;
         modalDesc.textContent = service.desc;
 
-        if (modalGallery) modalGallery.innerHTML = '';
-        if (modalTabs) modalTabs.innerHTML = '';
+        modalTabs.innerHTML = '';
+        spaceSummary.innerHTML = '';
 
-        // 👉 CASO 1: Estadía (con tabs)
         if (service.floors) {
             modalTabs.style.display = 'flex';
 
-            const floors = Object.keys(service.floors);
+            const floorKeys = Object.keys(service.floors);
 
-            floors.forEach((floor, index) => {
+            // Crear tabs
+            floorKeys.forEach((floorKey, index) => {
                 const tab = document.createElement('button');
                 tab.className = 'modal-tab' + (index === 0 ? ' active' : '');
-                tab.textContent = floor;
+                tab.textContent = floorKey;
 
                 tab.addEventListener('click', () => {
-                document.querySelectorAll('.modal-tab')
-                    .forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.modal-tab')
+                        .forEach(t => t.classList.remove('active'));
 
-                tab.classList.add('active');
+                    tab.classList.add('active');
 
-                renderSpaces(service.floors[floor].spaces);
+                    const data = service.floors[floorKey];
 
-                floorDesc.classList.remove('active');
-                floorDesc.textContent = service.floors[floor].desc;
-
-                setTimeout(() => {
-                    floorDesc.classList.add('active');
-                }, 50);
-
-                loadGallery(service.floors[floor].images, modal);
-            });
+                    floorDesc.textContent = data.desc;
+                    renderSpaces(data.spaces);
+                    loadGridGallery(data.images);
+                });
 
                 modalTabs.appendChild(tab);
-
-                if (index === 0) {
-                    floorDesc.textContent = service.floors[floor].desc;
-                    floorDesc.classList.add('active');
-                    renderSpaces(service.floors[floor].spaces);
-                    loadGallery(service.floors[floor].images, modal);
-                }
             });
 
-        } 
-        // 👉 CASO 2: Otros servicios (sin tabs)
+            const firstFloorKey = floorKeys[0];
+            const firstFloorData = service.floors[firstFloorKey];
+
+            floorDesc.textContent = firstFloorData.desc;
+            console.log(floorDesc.textContent)
+            renderSpaces(firstFloorData.spaces);
+            loadGridGallery(firstFloorData.images);
+        }
         else {
+            
             modalTabs.style.display = 'none';
-            loadGallery(service.images, modal);
+            floorDesc.textContent = service.desc;
+            console.log(floorDesc.textContent)
+            renderSpaces(service.spaces || []);
+            loadGridGallery(service.images);
         }
 
         modal.classList.add('active');
     }
-
     
-
-    /*document.querySelectorAll('.services-card').forEach(card => {
+    document.querySelectorAll('.services-card').forEach(card => {
         card.addEventListener('click', () => {
-            const service = card.dataset.service;
-            openModal(service);
+            const serviceKey = card.dataset.service;
+            openModal(serviceKey);
         });
-    });*/
+    });
+
+    function loadGridGallery(images = []) {
+        const grid = document.getElementById('modalGrid');
+        if (!grid) return;
+
+        grid.innerHTML = '';
+
+        images.slice(0, 12).forEach((src, index) => {
+            const img = document.createElement('img');
+            img.src = src;
+
+            img.style.animationDelay = `${index * 0.12}s`;
+
+            grid.appendChild(img);
+        });
+    }
+
 
     function closeServiceModal() {
         modal.classList.remove('active');
@@ -268,10 +281,7 @@ document.addEventListener('DOMContentLoaded', () => {
     closeModal.addEventListener('click', closeServiceModal);
     modal.addEventListener('click', e => {
         if (e.target === modal) closeServiceModal();
-    });
-
-
-    
+    });    
 
     function renderSpaces(spaces = []) {
         if (!spaceSummary) return;
