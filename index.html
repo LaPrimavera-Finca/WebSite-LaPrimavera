@@ -21,14 +21,6 @@
     <link rel="stylesheet" href="css/templatemo-style.css">
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    
-    <style>
-        .carousel-item img {
-            width: 100%;
-            height: 750px; /* Ajusta la altura a lo que quieras */
-            object-fit: fill;
-        }
-    </style>
 
 </head>
 
@@ -72,19 +64,20 @@
                     <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
                     <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
                     <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
                 </ol>
-                <div class="carousel-inner">
+                <div class="carousel-inner"">
                     <div class="carousel-item active">
-                    <img class="d-block w-100" src="img/carrus-prim1.jpg" alt="First slide">
+                    <img class="d-block w-100" src="img/carrus/carrus-ppal1.jpg" alt="First slide">
                     </div>
                     <div class="carousel-item">
-                    <img class="d-block w-100" src="img/carrus-prim3.jpg" alt="Second slide">
+                    <img class="d-block w-100" src="img/carrus/carrus-ppal2.jpg" alt="Second slide">
                     </div>
                     <div class="carousel-item">
-                    <img class="d-block w-100" src="img/carrus-prim2.jpg" alt="Third slide">
+                    <img class="d-block w-100" src="img/carrus/carrus-ppal3.jpg" alt="Third slide">
                     </div>
                     <div class="carousel-item">
-                    <img class="d-block w-100" src="img/carrus-prim4.jpg" alt="Fourth slide">
+                    <img class="d-block w-100" src="img/carrus/carrus-ppal4.jpg" alt="Fourth slide">
                     </div>
                 </div>
                 <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -120,7 +113,7 @@
                         <img src="img/ca1.jpg" alt="Image">    
                     </div>
                     <div class="tm-slideshow-description tm-bg-primary">
-                        <h2 class="">Europe's most visited places</h2>
+                        <h2 class="">Vive Experiencias...</h2>
                         <p>Este lugar campestre ha sido creado para quienes buscan desconectarse del ruido, reencontrarse con la naturaleza y disfrutar de una experiencia 
                             de descanso auténtica y placentera. Rodeado de paisajes verdes, aire puro y una tranquilidad que se siente desde el primer momento, el entorno 
                             invita a bajar el ritmo y dejar atrás las preocupaciones del día a día. Cada espacio ha sido pensado para brindar comodidad sin perder la esencia 
@@ -136,7 +129,7 @@
                     </div> 
 
                     <div class="tm-slideshow-description tm-slideshow-description-left tm-bg-highlight">
-                        <h2 class="">Asia's most popular places</h2>
+                        <h2 class="">¡Espacios Unicos!</h2>
                         <p>El lugar ofrece áreas ideales para compartir en familia o con amigos, así como rincones tranquilos para descansar, leer o simplemente contemplar 
                             la naturaleza. Las zonas comunes permiten disfrutar de momentos especiales, ya sea alrededor de una mesa, en una terraza abierta o caminando por 
                             los alrededores, donde cada paso transmite paz y bienestar. La estadía combina confort y sencillez, manteniendo un ambiente limpio, ordenado y 
@@ -147,13 +140,21 @@
                 </section>
             </div>
 
-            <section class="section-est" id="homeSlider">
+            <section class="section-est" id="sectionEst">
                 <div class="section-est-title">
                     <h2>Establecimiento</h2>
                     <p>Espacios diseñados para tu tranquilidad</p>
                 </div>
-                <div class="modal-gallery">
-                    <div class="gallery-track"></div>
+                <div id="homeSlider1">
+                    <div class="modal-gallery">
+                        <div class="gallery-track"></div>
+                    </div>
+                </div>
+                <p></p>
+                <div id="homeSlider2">
+                    <div class="modal-gallery">
+                        <div class="gallery-track"></div>
+                    </div>
                 </div>
             </section>
 
@@ -325,6 +326,9 @@
 
     <!-- load JS files -->
     <script src="js/main.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
                
 
 </body>

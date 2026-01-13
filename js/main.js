@@ -1,26 +1,104 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     /* ======================
-       MODAL DE SERVICIOS
+    Slider infinite with Images
     ====================== */
 
-    const homeSlider = document.getElementById('homeSlider');
+    const sectionEst = document.getElementById('sectionEst');
+    const modalGallery = sectionEst.querySelector('.gallery-track');
+    const galleryCache = new Map();
 
-    loadGallery(
-        [
-            'img/est-pp-sala-comedor.jpeg',
-            'img/est-pp-sala.jpg',
-            'img/est-pp-comedor.jpg'
+    const homeSlider1 = document.getElementById('homeSlider1');
+    const homeSlider2 = document.getElementById('homeSlider2');
+
+    const galleries = {
+        slider1: [
+            'img/spaces/space1.jpg',
+            'img/spaces/space2.jpeg',
+            'img/spaces/space3.jpg',
+            'img/spaces/space4.jpg',
+            'img/spaces/space5.jpg'
         ],
-        homeSlider
-    );
+        slider2: [
+            'img/spaces/space6.jpg',
+            'img/spaces/space7.jpeg',
+            'img/spaces/space8.jpg',
+            'img/spaces/space9.jpg',
+            'img/spaces/space10.jpg'
+        ]
+    };
 
+    function loadGallerySlider(images, container, speed =0.6, direction = 'left') {
+        if (!container) return;
+
+        const track = container.querySelector('.gallery-track');
+        if (!track) return;
+
+        const key = images.join('|');
+        track.innerHTML = '';
+
+        if (galleryCache.has(key)) {
+            galleryCache.get(key).forEach(img => {
+                track.appendChild(img.cloneNode(true));
+            });
+        } else {
+            const fragment = document.createDocumentFragment();
+
+            images.concat(images).forEach(src => {
+                const img = document.createElement('img');
+                img.src = src;
+                fragment.appendChild(img);
+            });
+
+            track.appendChild(fragment);
+            galleryCache.set(key, [...track.children]);
+        }
+
+        requestAnimationFrame(() => {
+            startInfiniteSlider(track, images.length, speed, direction);
+        });
+    }
+
+    function startInfiniteSlider(track, originalCount, speed = 0.5, direction = 'left') {
+        let animationId;
+        let translateX = 0;
+        
+        cancelAnimationFrame(animationId);
+        translateX = direction === 'right' ? -getTrackWidth(track, originalCount) : 0;
+
+        const blockWidth = getTrackWidth(track, originalCount);
+        const dirFactor = direction === 'right' ? 1 : -1;
+        
+        function animate() {
+            translateX += speed * dirFactor;
+            if (direction === 'left' && Math.abs(translateX) >= blockWidth) {
+                translateX = 0;
+            }
+            if (direction === 'right' && translateX >= 0) {
+                translateX = -blockWidth;
+            }
+            track.style.transform = `translateX(${translateX}px)`;
+            animationId = requestAnimationFrame(animate);
+        }
+        animate();
+    }
+    
+    function getTrackWidth(track, originalCount) {
+        return Array
+            .from(track.children)
+            .slice(0, originalCount)
+            .reduce((total, el) => total + el.offsetWidth + 16, 0);
+    }
+
+    loadGallerySlider(galleries.slider1, homeSlider1, 0.5, 'left');
+    loadGallerySlider(galleries.slider2, homeSlider2, 0.4, 'right');
+
+    
     const modal = document.getElementById('serviceModal');
     const modalTitle = document.getElementById('modalTitle');
     const modalDesc = document.getElementById('modalDesc');
     const closeModal = document.querySelector('.close-modal');
     const modalTabs = document.getElementById('modalTabs');
-    const modalGallery = document.querySelector('.gallery-track');
     const floorDesc = document.getElementById('floorDesc');
     const spaceSummary = document.getElementById('spaceSummary');
 
@@ -150,7 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     floorDesc.classList.add('active');
                 }, 50);
 
-                loadGallery(service.floors[floor].images);
+                loadGallery(service.floors[floor].images, modal);
             });
 
                 modalTabs.appendChild(tab);
@@ -159,7 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     floorDesc.textContent = service.floors[floor].desc;
                     floorDesc.classList.add('active');
                     renderSpaces(service.floors[floor].spaces);
-                    loadGallery(service.floors[floor].images);
+                    loadGallery(service.floors[floor].images, modal);
                 }
             });
 
@@ -167,42 +245,20 @@ document.addEventListener('DOMContentLoaded', () => {
         // 👉 CASO 2: Otros servicios (sin tabs)
         else {
             modalTabs.style.display = 'none';
-            loadGallery(service.images);
+            loadGallery(service.images, modal);
         }
 
         modal.classList.add('active');
     }
 
-    function loadGallery(images, container) {
-        const track = document.querySelector('.gallery-track');
-        if (!track) return;
+    
 
-        track.innerHTML = '';
-        currentOffset = 0;
-
-        images.forEach(img => {
-            const image = document.createElement('img');
-            image.src = img;
-            track.appendChild(image);
-        });
-
-        images.forEach(img => {
-            const image = document.createElement('img');
-            image.src = img;
-            track.appendChild(image);
-        });
-
-        requestAnimationFrame(() => {
-            startInfiniteSlider(track, images.length, 0.6);
-        });
-    }
-
-    document.querySelectorAll('.services-card').forEach(card => {
+    /*document.querySelectorAll('.services-card').forEach(card => {
         card.addEventListener('click', () => {
             const service = card.dataset.service;
             openModal(service);
         });
-    });
+    });*/
 
     function closeServiceModal() {
         modal.classList.remove('active');
@@ -215,28 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-    function startInfiniteSlider(track, originalCount, customSpeed = 1.5) {
-        let animationId;
-        let translateX = 0;
-        
-        cancelAnimationFrame(animationId);
-        translateX = 0;
-
-        const firstBlockWidth = Array
-            .from(track.children)
-            .slice(0, originalCount)
-            .reduce((total, el) => total + el.offsetWidth + 16, 0);
-
-        function animate() {
-            translateX -= customSpeed;
-            if (Math.abs(translateX) >= firstBlockWidth) {
-                translateX = 0;
-            }
-            track.style.transform = `translateX(${translateX}px)`;
-            animationId = requestAnimationFrame(animate);
-        }
-        animate();
-    }
+    
 
     function renderSpaces(spaces = []) {
         if (!spaceSummary) return;

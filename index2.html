@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Vista previa efecto inmersivo</title>
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f2f2f2;
+    }
+
+    /* Imagen inicial */
+    .preview-image {
+        width: 320px;
+        height: 220px;
+        margin: 100px auto;
+        border-radius: 18px;
+        overflow: hidden;
+        cursor: pointer;
+        transition: transform 0.4s ease;
+    }
+
+    .preview-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .preview-image:hover {
+        transform: scale(1.05);
+    }
+
+    /* Vista inmersiva */
+    .immersive-view {
+        position: fixed;
+        inset: 0;
+        background: #000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transform: scale(0.7);
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.7s ease;
+        z-index: 999;
+    }
+
+    .immersive-view.active {
+        transform: scale(1);
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .immersive-bg {
+        position: absolute;
+        inset: 0;
+        background-image: url("https://picsum.photos/1600/900");
+        background-size: cover;
+        background-position: center;
+        filter: blur(3px) brightness(0.6);
+        transform: scale(1.1);
+    }
+
+    .immersive-content {
+        position: relative;
+        color: white;
+        text-align: center;
+        max-width: 600px;
+        padding: 40px;
+        animation: fadeUp 0.8s ease forwards;
+    }
+
+    .immersive-content h1 {
+        font-size: 42px;
+        margin-bottom: 15px;
+    }
+
+    .immersive-content p {
+        font-size: 18px;
+        line-height: 1.6;
+    }
+
+    .immersive-content button {
+        margin-top: 25px;
+        padding: 12px 30px;
+        font-size: 16px;
+        border: none;
+        border-radius: 30px;
+        background: #ffcc00;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .close {
+        position: absolute;
+        top: 25px;
+        right: 30px;
+        font-size: 28px;
+        color: white;
+        cursor: pointer;
+    }
+
+    @keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<!-- Imagen inicial -->
+<div class="preview-image" onclick="openView()">
+    <img src="https://picsum.photos/600/400" alt="Estadía">
+</div>
+
+<!-- Vista inmersiva -->
+<div class="immersive-view" id="immersive">
+    <div class="immersive-bg"></div>
+
+    <div class="close" onclick="closeView()">✕</div>
+
+    <div class="immersive-content">
+        <h1>Estadía Campestre</h1>
+        <p>
+            Al dar clic, la imagen se expande a pantalla completa,
+            creando la sensación de que te acercas al lugar.
+            Aquí puedes mostrar información detallada, botones,
+            reservas o galerías.
+        </p>
+        <button>Reservar ahora</button>
+    </div>
+</div>
+
+<script>
+function openView() {
+    document.getElementById("immersive").classList.add("active");
+}
+
+function closeView() {
+    document.getElementById("immersive").classList.remove("active");
+}
+</script>
+
+</body>
+</html>
