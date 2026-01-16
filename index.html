@@ -43,13 +43,19 @@
                                     <a class="nav-link active" href="#top">Inicio <span class="sr-only">(current)</span></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#tm-section-2">Instalaciones</a>
+                                    <a class="nav-link" href="#sec-about">Conocenos</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#tm-section-3">Servicios</a>
+                                    <a class="nav-link" href="#sec-estab">Establecimiento</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#tm-section-4">Contacto</a>
+                                    <a class="nav-link" href="#sec-experience">Experiencias</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#sec-services">Servicios</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#sec-contact">Contacto</a>
                                 </li>
                             </ul>
                         </div>                            
@@ -107,7 +113,7 @@
         <div class="tm-page-wrap mx-auto">
 
             <div class="tm-container-outer" id="tm-section-2">
-                <section class="tm-slideshow-section">
+                <section id="sec-about" class="tm-slideshow-section">
                     <div class="tm-slideshow">
                         <img src="img/ca1.jpg" alt="Image">    
                     </div>
@@ -140,7 +146,7 @@
             </div>
 
             <section class="section-est" id="sectionEst">
-                <div class="section-est-title">
+                <div id="sec-estab" class="section-est-title">
                     <h2>Establecimiento</h2>
                     <p>Espacios diseñados para tu tranquilidad</p>
                 </div>
@@ -158,7 +164,7 @@
             </section>
 
             <!-- ===== Sección Imagen-Carrus + Texto ===== -->
-            <section class="info-section">
+            <section id="sec-experience" class="info-section">
                 <div class="info-container">
 
                     <div class="info-carousel">
@@ -189,7 +195,7 @@
             </section>
 
             <!-- ===== Sección uestros Servicios ===== -->
-            <section class="section-wrapper">
+            <section id="sec-services" class="section-wrapper">
                 <div class="section-title">
                     <h2>Nuestros servicios</h2>
                     <p>Comodidad y confort adecuados para ti</p>
@@ -252,13 +258,13 @@
             </div>
 
             <!-- Info Contacto -->
-            <section class="contact-section">
+            <section id="sec-contact" class="contact-section">
                 <div class="section-title">
                     <h2>Contacto</h2>
                 </div>
                 <div class="contact-cards">
 
-                    <div class="card">
+                    <div class="card animate-card">
                         <div class="icon">
                             <img src="img/contact/icon-map.png" alt="Mapa">
                         </div>
@@ -266,7 +272,7 @@
                         <p>Cra 74 #20-19 - Callejon Vergara - Rozo - Valle del Cauca - Colombia</p>
                     </div>
 
-                    <div class="card">
+                    <div class="card animate-card">
                         <div class="icon">
                             <img src="img/contact/icon-cellphone.png" alt="Celular">
                         </div>
@@ -276,7 +282,7 @@
                         </p>
                     </div>
 
-                    <div class="card">
+                    <div class="card animate-card">
                         <div class="icon">
                             <img src="img/contact/icon-facebook.webp" alt="Facebook">
                         </div>
@@ -287,7 +293,7 @@
                         </a>
                     </div>
 
-                    <div class="card">
+                    <div class="card animate-card">
                         <div class="icon">
                             <img src="img/contact/icon-email.png" alt="Emial">
                         </div>
@@ -308,7 +314,8 @@
                 </div>
             </section>
 
-            <a href="https://wa.me/573206596970" class="whatsapp-float" target="_blank">
+            <a href="https://wa.me/573206596970?text=Hola%20buen%20día%20,%20vengo%20desde%20su%20página%20web%20y%20me%20gustaría%20recibir%20más%20información.%20Gracias!"
+                class="whatsapp-float" target="_blank">
                 <img src="img/icon-whatsapp.png" alt="WhatsApp">
             </a>
 
@@ -328,6 +335,23 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
                
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const cards = document.querySelectorAll(".animate-card");
 
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("show");
+                observer.unobserve(entry.target); // una sola vez
+            }
+        });
+    }, {
+        threshold: 0.25
+    });
+
+    cards.forEach(card => observer.observe(card));
+});
+</script>
 </body>
 </html>

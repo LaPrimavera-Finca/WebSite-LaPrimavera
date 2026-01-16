@@ -117,7 +117,7 @@
 }
 
 .contact-section .card {
-    background: linear-gradient(0deg, #668866, #95d2d6a1);
+    background: linear-gradient(0deg, #668866, #def3f5a1);
     border-radius: 20px;
     box-shadow: none;
     border: 30px;
@@ -153,6 +153,40 @@
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+}
+
+.card.animate-card {
+    opacity: 0;
+    transform: translateY(40px);
+}
+
+.card.animate-card.show {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.card .icon img {
+    width: 48px;
+}
+
+/* Salto cuando la card aparece */
+.card.animate-card.show .icon img {
+    animation: iconBounce 0.7s ease;
+}
+
+@keyframes iconBounce {
+    0% {
+        transform: translateY(15px);
+        opacity: 0;
+    }
+    60% {
+        transform: translateY(-8px);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(0);
+    }
 }
 
 /* ---- Responsive ---- */

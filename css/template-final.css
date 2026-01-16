@@ -4,6 +4,9 @@ padding: 80px 20px;
 background: #67a4af41;
 }
 
+#sec-estab, #sec-experience, #sec-services, #sec-contact, #sec-about {
+    scroll-margin-top: 150px;
+}
 
 .info-container {
 max-width: 1300px;
