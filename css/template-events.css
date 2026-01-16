@@ -27,11 +27,16 @@ margin-top: 10px;
 }
 
 .services-card {
+    cursor: pointer;
     position: relative;
     border-radius: 20px;
     overflow: hidden;
     background: #ee4646;
     transition: transform .4s ease;
+}
+
+.services-card * {
+    pointer-events: none;
 }
 
 .services-card:hover {
@@ -42,9 +47,11 @@ margin-top: 10px;
     width: 100%;
     height: 320px;
     object-fit: cover;
+    pointer-events: none;
 }
 
 .services-overlay {
+    pointer-events: none;
     position: absolute;
     inset: 0;
     background: linear-gradient(180deg, transparent, rgba(3, 61, 8, 0.75));

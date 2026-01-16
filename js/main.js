@@ -1,5 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+    document.querySelectorAll('.services-card').forEach(card => {
+    card.addEventListener('click', () => console.log('CLICK CARD'));
+    });
     /* ======================
     Slider infinite with Images
     ====================== */
@@ -121,10 +124,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         'Alcoba trasera'
                     ],
                     images: [
-                        'img/est-pp-sala-comedor.jpeg',
-                        'img/est-pp-sala.jpg',
-                        'img/est-pp-comedor.jpg',
-                        'img/est-pp-baño.png'
+                        'img/estadia-pp/pp-sala-comedor.jpeg',
+                        'img/estadia-pp/pp-sala.jpg',
+                        'img/estadia-pp/pp-baño.png',
+                        'img/estadia-pp/pp-cocina.jpg',
+                        'img/estadia-pp/pp-cuarto.jpg',
+                        'img/estadia-pp/pp-lavadero.jpg'
                     ]
                 },
                 'Segundo Piso': {
@@ -138,11 +143,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         '2 Habitaciones auxiliares'
                     ],
                     images: [
-                        'img/estadia-sp-sala.jpg',
-                        'img/estadia-sp-cp.jpg',
-                        'img/estadia-sp-ca1.jpg',
-                        'img/estadia-sp-ca2.jpg',
-                        'img/estadia-sp-baño.jpg'
+                        'img/estadia-sp/sp-sala.jpg',
+                        'img/estadia-sp/sp-cp.jpg',
+                        'img/estadia-sp/sp-ca1.jpg',
+                        'img/estadia-sp/sp-ca2.jpg',
+                        'img/estadia-sp/sp-baño.jpg',
+                        'img/estadia-sp/sp-sala2.jpg'
                     ]
                 },
                 'Estadero': {
@@ -159,9 +165,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         'Mini Lavadero'
                     ],
                     images: [
-                        'img/tm-img-05.jpg',
-                        'img/tm-img-06.jpg',
-                        'img/tm-img-07.jpg'
+                        'img/estadia-est/est-2.jpg',
+                        'img/estadia-est/est-barra.jpg',
+                        'img/estadia-est/est-parrilla.jpg',
+                        'img/estadia-est/est-cocina.jpg',
+                        'img/estadia-est/est-out.jpg',
+                        'img/estadia-est/est-1.jpg',
                     ]
                 }
             }
@@ -170,24 +179,32 @@ document.addEventListener('DOMContentLoaded', () => {
             title: 'Pasadías',
             desc: 'Comparte en un espacio calido y de recreacion lleno de experiencias.',
             spaces: [
-                        'Habitación principal',
-                        'Baño privado',
-                        'Balcón',
-                        'Zona de descanso'
+                'Piscina',
+                'Baños mixtos',
+                'Bar',
+                'Estadero',
+                'Juego de Sapo',
             ],
             images: [
-                'img/eventos1.jpg',
-                'img/eventos2.jpg',
-                'img/eventos3.jpg'
+                'img/pasadia/pas-1.jpg',
+                'img/pasadia/pas-2.jpg',
+                'img/pasadia/pas-3.jpg'
             ]
         },
         eventos: {
             title: 'Eventos',
-            desc: 'Bodas, reuniones y celebraciones.',
+            desc: 'Espacios diseñados para reuniones y celebraciones de cualquier indole.',
+            spaces: [
+                'Piscina',
+                'Baños mixtos',
+                'Bar',
+                'Estadero',
+                'Juego de Sapo',
+            ],
             images: [
-                'img/eventos1.jpg',
-                'img/eventos2.jpg',
-                'img/eventos3.jpg'
+                'img/eventos/eventos-1.jpg',
+                'img/eventos/eventos-2.jpg',
+                'img/eventos/eventos-3.jpg'
             ]
         }
     };
@@ -195,6 +212,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function openModal(serviceKey) {
         const service = services[serviceKey];
         if (!service) return;
+
+         resetModal();
 
         modalTitle.textContent = service.title;
         modalDesc.textContent = service.desc;
@@ -204,13 +223,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (service.floors) {
             modalTabs.style.display = 'flex';
+            floorDesc.style.display = 'block';
 
             const floorKeys = Object.keys(service.floors);
 
-            // Crear tabs
             floorKeys.forEach((floorKey, index) => {
                 const tab = document.createElement('button');
-                tab.className = 'modal-tab' + (index === 0 ? ' active' : '');
+                tab.className = 'modal-tab';
                 tab.textContent = floorKey;
 
                 tab.addEventListener('click', () => {
@@ -220,7 +239,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     tab.classList.add('active');
 
                     const data = service.floors[floorKey];
-
                     floorDesc.textContent = data.desc;
                     renderSpaces(data.spaces);
                     loadGridGallery(data.images);
@@ -232,16 +250,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const firstFloorKey = floorKeys[0];
             const firstFloorData = service.floors[firstFloorKey];
 
+            modalTabs.children[0].classList.add('active');
             floorDesc.textContent = firstFloorData.desc;
-            console.log(floorDesc.textContent)
             renderSpaces(firstFloorData.spaces);
             loadGridGallery(firstFloorData.images);
         }
         else {
-            
             modalTabs.style.display = 'none';
+            floorDesc.style.display = 'none';
+
             floorDesc.textContent = service.desc;
-            console.log(floorDesc.textContent)
             renderSpaces(service.spaces || []);
             loadGridGallery(service.images);
         }
@@ -255,6 +273,20 @@ document.addEventListener('DOMContentLoaded', () => {
             openModal(serviceKey);
         });
     });
+
+    function resetModal() {
+        modalTabs.innerHTML = '';
+        modalTabs.style.display = 'none';
+
+        floorDesc.textContent = '';
+        floorDesc.classList.remove('active');
+        floorDesc.style.display = 'block';
+
+        spaceSummary.innerHTML = '';
+
+        const grid = document.getElementById('modalGrid');
+        if (grid) grid.innerHTML = '';
+    }
 
     function loadGridGallery(images = []) {
         const grid = document.getElementById('modalGrid');
@@ -276,6 +308,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function closeServiceModal() {
         modal.classList.remove('active');
         clearInterval(sliderInterval);
+        resetModal();
     }
 
     closeModal.addEventListener('click', closeServiceModal);
